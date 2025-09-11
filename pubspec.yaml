@@ -1,7 +1,7 @@
 name: flutter_macos_permissions
 description: A Flutter plugin for requesting camera, microphone, and notification permissions on macOS.
 version: 1.0.0
-homepage: https://github.com/Androidsignal/flutter_macos_permission.git
+homepage: https://github.com/Androidsignal/flutter_macos_permissions.git
 
 flutter:
   plugin:
