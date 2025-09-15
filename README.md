@@ -1,15 +1,138 @@
-# flutter_macos_permissions
+[![dashstack_poster](https://github.com/user-attachments/assets/01150ab3-4631-48a2-8c56-5c64d0fd887b)](https://dashstack.notion.site/Ravi-Vithani-e65c362e335d45ef993225687e4aacb8?pvs=143)
 
-A new Flutter plugin project.
+#  flutter macos permissions   
+A simple Flutter plugin to request Camera, Microphone, and Notification permissions on macOS.
 
-## Getting Started
+This plugin provides an easy-to-use API using method channels to handle macOS permissions in your Flutter desktop apps.
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/to/develop-plugins),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## ✨ Features
+✅ Request Camera permission
 
+✅ Request Microphone permission
+
+✅ Request Notification permission		
+
+✅ Simple MethodChannel integration
+
+✅ Works with Flutter macOS desktop apps
+
+---
+## How to use it ?
+
+### 1. Add dependency
+Add this to your package's `pubspec.yaml` file:
+
+```yaml
+dependencies:
+ flutter_macos_permissions: <latest_version>
+```  
+
+### 2. Install it You can install packages from the command line: 
+
+with pub :
+```
+$ pub get
+```
+with Flutter : 
+```
+$ flutter pub get
+```
+### 3. Import it
+
+Now in your `Dart` code, you can use :
+
+```
+import 'package:flutter_macos_permissions/flutter_macos_permissions.dart';
+```
+
+### 4.How to Use it ?
+
+[Sample](https://github.com/Androidsignal/flutter_macos_permissions/blob/main/example/lib/main.dart) app demonstrates how simple the usage of the library actually is.
+
+Using PriceText in your project is super simple.
+
+You just need to add the widget with an amount and currency type, and it will handle formatting for you.
+
+## Build permission with FlutterMacosPermissions
+```
+ String _status = "Idle";
+
+  void _request(String type) async {
+    bool granted = false;
+    try {
+      switch (type) {
+        case 'camera':
+          granted = await FlutterMacosPermissions.requestCamera();
+          break;
+        case 'microphone':
+          granted = await FlutterMacosPermissions.requestMicrophone();
+          break;
+        case 'notification':
+          granted = await FlutterMacosPermissions.requestNotification();
+          break;
+      }
+      setState(() {
+        _status = '$type permission: ${granted ? "Granted" : "Denied"}';
+      });
+    } catch (e) {
+      setState(() {
+        _status = 'Error: $e';
+      });
+    }
+  }
+```
+
+### Build UI buttons
+```
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('macOS Permission Example')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(_status),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => _request('camera'),
+              child: const Text('Request Camera'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => _request('microphone'),
+              child: const Text('Request Microphone'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => _request('notification'),
+              child: const Text('Request Notification'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+```
+## 📸 Example
+|without Any Permission| with Camera Permission | with Microphone Permission | with Notification Permission |
+|-------------------|-----------------------------|-----------------------------|-----------------------------|
+| ![idel](https://github.com/user-attachments/assets/8e81d7ce-e113-4d13-983d-7d57e18a354f) | ![camera permission](https://github.com/user-attachments/assets/cddb4f6c-55db-450e-8504-23b4613d5dcc)  | ![microphone permission](https://github.com/user-attachments/assets/dc10fdda-8359-4971-b3c3-7f3c0ef3c1c2) | ![Notification permission](https://github.com/user-attachments/assets/a9d2e45d-a7d9-42ee-a4ca-7f4b80bd662c) | 
+
+# Bugs and Feedback 
+We welcome and appreciate any suggestions you may have for improvement.
+For bugs, questions, and discussions please use the [GitHub Issues](https://github.com/Androidsignal/flutter_macos_permissions/issues).
+
+# Acknowledgments 
+It extends Flutter’s foundation to provide a ready-to-use, customizable currency formatter widget.While Flutter and intl provide the base, flutter_macos_permissions simplifies the process by combining widgets and formatting logic into a single package you can drop into any app.
+ 
+# Contribution 
+The DashStack team enthusiastically welcomes contributions and project participation!
+There are a bunch of things you can do if you want to contribute!
+The Contributor Guide has all the information you need for everything from reporting bugs to contributing new features.
+  
+# Credits 
+`flutter_macos_permissions` is owned and maintained by the `Dashstack Infotech`.
+Follow us for updates and new releases 🚀.
