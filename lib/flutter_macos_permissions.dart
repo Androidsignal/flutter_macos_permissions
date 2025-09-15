@@ -1,7 +1,8 @@
 import 'package:flutter/services.dart';
 
 class FlutterMacosPermissions {
-  static const MethodChannel _channel = MethodChannel('flutter_macos_permissions');
+  static const MethodChannel _channel =
+      MethodChannel('flutter_macos_permissions');
 
   static Future<bool> requestCamera() async {
     final result = await _channel.invokeMethod<bool>('requestCamera');

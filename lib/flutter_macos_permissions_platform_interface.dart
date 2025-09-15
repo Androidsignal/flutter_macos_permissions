@@ -8,7 +8,8 @@ abstract class FlutterMacosPermissionsPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static FlutterMacosPermissionsPlatform _instance = MethodChannelFlutterMacosPermissions();
+  static FlutterMacosPermissionsPlatform _instance =
+      MethodChannelFlutterMacosPermissions();
 
   /// The default instance of [FlutterMacosPermissionsPlatform] to use.
   ///
