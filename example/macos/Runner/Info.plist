@@ -37,7 +37,7 @@
     <string>We need access to your microphone.</string>
 
     <key>NSUserNotificationAlertStyle</key>
-    <string>Alert</string>
+    <string>alert</string>
 
 </dict>
 </plist>

@@ -18,4 +18,20 @@ class FlutterMacosPermissions {
     final result = await _channel.invokeMethod<bool>('requestNotification');
     return result ?? false;
   }
+  /// status
+  /// Check if camera permission is granted
+  static Future<String> cameraStatus() async {
+    final result = await _channel.invokeMethod('cameraStatus');
+    return result ?? '';
+  }
+
+  static Future microphoneStatus() async {
+    final result = await _channel.invokeMethod('microphoneStatus');
+    return result ?? '';
+  }
+
+  static Future<String> notificationStatus() async {
+    final result = await _channel.invokeMethod('notificationStatus');
+    return result ?? '';
+  }
 }
