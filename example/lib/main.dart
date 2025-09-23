@@ -38,7 +38,7 @@ class _PermissionExampleState extends State<PermissionExample> {
           break;
         case 'notification':
           granted = await FlutterMacosPermissions.requestNotification();
-           print('requested notification permission: $granted');
+          print('requested notification permission: $granted');
           break;
       }
       setState(() {
@@ -64,7 +64,6 @@ class _PermissionExampleState extends State<PermissionExample> {
     }
   }
 
-
   /// Check status (without requesting)
   void _checkStatus(String type) async {
     String status = 'Unknown';
@@ -82,7 +81,9 @@ class _PermissionExampleState extends State<PermissionExample> {
           print('checking notification status $status');
           break;
       }
-      setState(() { _status = 'Status $type → $status ';});
+      setState(() {
+        _status = 'Status $type → $status ';
+      });
     } catch (e) {
       setState(() => _status = 'Error while checking $type: $e');
     }

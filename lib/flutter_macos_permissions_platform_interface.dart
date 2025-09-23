@@ -11,7 +11,6 @@ abstract class FlutterMacosPermissionsPlatform extends PlatformInterface {
   static FlutterMacosPermissionsPlatform _instance =
       MethodChannelFlutterMacosPermissions();
 
-
   /// The default instance of [FlutterMacosPermissionsPlatform] to use.
   ///
   /// Defaults to [MethodChannelFlutterMacosPermissions].
