@@ -8,15 +8,15 @@ This plugin provides an easy-to-use API using method channels to handle macOS pe
 ---
 
 ## ✨ Features
-✅ Request Camera permission
+🎥 Request Camera permission
 
-✅ Request Microphone permission
+🎤 Request Microphone permission
 
-✅ Request Notification permission		
+🔔 Request Notification permission
 
-✅ Simple MethodChannel integration
+🔎 Check current permission status
 
-✅ Works with Flutter macOS desktop apps
+📝 Works with Flutter macOS desktop apps
 
 ---
 ## How to use it ?
@@ -56,6 +56,9 @@ Using PriceText in your project is super simple.
 You just need to add the widget with an amount and currency type, and it will handle formatting for you.
 
 ## Build permission with FlutterMacosPermissions
+
+---
+## 🔹 Request permissions
 ```
  String _status = "Idle";
 
@@ -83,7 +86,6 @@ You just need to add the widget with an amount and currency type, and it will ha
     }
   }
 ```
-
 ### Build UI buttons
 ```
 @override
@@ -120,6 +122,74 @@ You just need to add the widget with an amount and currency type, and it will ha
 |without Any Permission| with Camera Permission | with Microphone Permission | with Notification Permission |
 |-------------------|-----------------------------|-----------------------------|-----------------------------|
 | ![idel](https://github.com/user-attachments/assets/8e81d7ce-e113-4d13-983d-7d57e18a354f) | ![camera permission](https://github.com/user-attachments/assets/cddb4f6c-55db-450e-8504-23b4613d5dcc)  | ![microphone permission](https://github.com/user-attachments/assets/dc10fdda-8359-4971-b3c3-7f3c0ef3c1c2) | ![Notification permission](https://github.com/user-attachments/assets/a9d2e45d-a7d9-42ee-a4ca-7f4b80bd662c) | 
+
+
+## 🔹 Check permission status
+```
+/// Check status (without requesting)
+  void _checkStatus(String type) async {
+    String status = 'Unknown';
+    try {
+      switch (type) {
+        case 'cameraStatus':
+          status = await FlutterMacosPermissions.cameraStatus();
+          break;
+        case 'microphoneStatus':
+          status = await FlutterMacosPermissions.microphoneStatus();
+          print('microphone status: $status');
+          break;
+        case 'notificationStatus':
+          status = await FlutterMacosPermissions.notificationStatus();
+          print('checking notification status $status');
+          break;
+      }
+      setState(() {
+        _status = 'Status $type → $status ';
+      });
+    } catch (e) {
+      setState(() => _status = 'Error while checking $type: $e');
+    }
+  }
+```
+### Build UI buttons
+```
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('macOS Permission Example')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+             /// CAMERA
+            ElevatedButton(
+              onPressed: () => _request('camera'),
+              child: const Text('Request Camera'),
+            ),
+            const SizedBox(height: 20),
+             /// MICROPHONE
+             ElevatedButton(
+              onPressed: () => _checkStatus('microphoneStatus'),
+              child: const Text('Check Microphone Status'),
+            ),
+            const SizedBox(height: 20),
+            /// NOTIFICATION
+             ElevatedButton(
+              onPressed: () => _checkStatus('notificationStatus'),
+              child: const Text('Check Notification Status'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+```
+
+## 📸 Example
+| Camera Status | Microphone Status | Notification Status |
+|---------------|-------------------|---------------------|
+| ![Camera](https://github.com/user-attachments/assets/06e1174b-36b9-4968-b7cd-90ae48f8809f) | ![Microphone](https://github.com/user-attachments/assets/e8a3f128-3f53-4988-95cf-21410e4db8d4) | ![Notification](https://github.com/user-attachments/assets/1322040a-29e6-41fe-bd9e-6811641c1776) |
+
 
 # Bugs and Feedback 
 We welcome and appreciate any suggestions you may have for improvement.
