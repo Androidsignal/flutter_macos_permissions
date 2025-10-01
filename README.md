@@ -141,8 +141,6 @@ Using `flutter_macos_permissions` in your project is super simple.
 |-------------------|-----------------------------|-----------------------------|-----------------------------|
 | ![idel](https://github.com/user-attachments/assets/f84bc852-6590-4a02-b1fd-d45d84fe6b63) | ![camera permission](https://github.com/user-attachments/assets/50775195-48ff-40ae-aee0-fe730fce0828)  | ![microphone permission](https://github.com/user-attachments/assets/c0051a8f-3ea0-48c1-8ccb-c9192bac80ea) | ![Notification permission](https://github.com/user-attachments/assets/769e417a-4602-425c-8f31-6657014b19d4) | 
 
-
-
 ## 🔹 Check permission status
 
 * You can also check the current status without requesting and with requesting.
