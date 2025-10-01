@@ -51,7 +51,7 @@ import 'package:flutter_macos_permissions/flutter_macos_permissions.dart';
 
 [Sample](https://github.com/Androidsignal/flutter_macos_permissions/blob/main/example/lib/main.dart) app demonstrates how simple the usage of the library actually is.
 
-Using `flutter_macos_permissions` in your project is super simple.
+Using `flutter_macos_permissions` in your project easy to intregate.
 
 ## Build permission with FlutterMacosPermissions
 
