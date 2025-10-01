@@ -5,6 +5,11 @@ This project follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## 2.0.3
+- Updated UI in the example app to showcase permission request and status clearly.
+- Updated `README.md` documentation with new example usage with UI screenshots.
+
+
 ## 2.0.2
 - Update documentation in `README.md` with better user example.
 

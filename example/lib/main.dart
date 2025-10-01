@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_macos_permissions/flutter_macos_permissions.dart';
 
 void main() {
@@ -11,7 +10,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: PermissionExample());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'macOS Permissions',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const PermissionExample(),
+    );
   }
 }
 
@@ -23,10 +27,10 @@ class PermissionExample extends StatefulWidget {
 }
 
 class _PermissionExampleState extends State<PermissionExample> {
-  String _status = "Idle";
+  String status = "Idle";
 
-  /// Request permission
-  void _request(String type) async {
+  /// Request Permission
+  void request(String type) async {
     bool granted = false;
     try {
       switch (type) {
@@ -38,34 +42,20 @@ class _PermissionExampleState extends State<PermissionExample> {
           break;
         case 'notification':
           granted = await FlutterMacosPermissions.requestNotification();
-          print('requested notification permission: $granted');
           break;
       }
       setState(() {
-        _status = 'Requested $type → ${granted ? "Granted" : "Denied"}';
+        status = 'Requested $type → ${granted ? "Granted" : "Denied"}';
       });
     } catch (e) {
       setState(() {
-        _status = 'Error while requesting $type: $e';
+        status = 'Error: $e';
       });
     }
   }
 
-  void _requestNotification(String) async {
-    try {
-      bool granted = await FlutterMacosPermissions.requestNotification();
-      setState(() {
-        _status = 'Notification permission → ${granted ? "Granted" : "Denied"}';
-      });
-    } on PlatformException catch (e) {
-      setState(() {
-        _status = 'Error requesting notification: ${e.message ?? "unknown"}';
-      });
-    }
-  }
-
-  /// Check status (without requesting)
-  void _checkStatus(String type) async {
+  /// Check Permission Status
+  void checkStatus(String type) async {
     String status = 'Unknown';
     try {
       switch (type) {
@@ -74,65 +64,148 @@ class _PermissionExampleState extends State<PermissionExample> {
           break;
         case 'microphoneStatus':
           status = await FlutterMacosPermissions.microphoneStatus();
-          print('microphone status: $status');
           break;
         case 'notificationStatus':
           status = await FlutterMacosPermissions.notificationStatus();
-          print('checking notification status $status');
           break;
       }
       setState(() {
-        _status = 'Status $type → $status ';
+        this.status = 'Status $type → $status';
       });
     } catch (e) {
-      setState(() => _status = 'Error while checking $type: $e');
+      setState(() => this.status = 'Error: $e');
     }
+  }
+
+  /// Permission Card Widget
+  Widget permissionCard(
+    String title,
+    IconData icon,
+    VoidCallback request,
+    VoidCallback status,
+  ) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: Colors.grey, width: 1.5),
+      ),
+      elevation: 8,
+      shadowColor: Colors.black.withAlpha(10),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.black12.withAlpha(10),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, size: 40, color: Colors.black87),
+            ),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+            Column(
+              children: [
+                ElevatedButton(
+                  onPressed: request,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    backgroundColor: Colors.black38,
+                    foregroundColor: Colors.white,
+                    elevation: 4,
+                  ),
+                  child: const Text('Request Permission'),
+                ),
+                const SizedBox(height: 8),
+                OutlinedButton(
+                  onPressed: status,
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    side: BorderSide(color: Colors.black87, width: 1.2),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    'Check Status',
+                    style: TextStyle(color: Colors.black87),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('macOS Permission Example')),
-      body: Center(
+      appBar: AppBar(title: const Text('MacOS Permissions')),
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(_status, style: const TextStyle(fontSize: 16)),
-            const SizedBox(height: 30),
-
-            /// CAMERA
-            ElevatedButton(
-              onPressed: () => _request('camera'),
-              child: const Text('Request Camera'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _checkStatus('cameraStatus'),
-              child: const Text('Check Camera Status'),
-            ),
             const SizedBox(height: 20),
 
-            /// MICROPHONE
-            ElevatedButton(
-              onPressed: () => _request('microphone'),
-              child: const Text('Request Microphone'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _checkStatus('microphoneStatus'),
-              child: const Text('Check Microphone Status'),
+            /// Status Display
+            Container(
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.grey.shade400,
+                  width: 2, // Border width
+                ),
+              ),
+              child: Text(status, style: const TextStyle(fontSize: 16)),
             ),
             const SizedBox(height: 20),
 
-            /// NOTIFICATION
-            ElevatedButton(
-              onPressed: () => _requestNotification('notification'),
-              child: const Text('Request Notification'),
+            /// camera permission and status
+            permissionCard(
+              'Camera',
+              Icons.camera_alt,
+              () => request('camera'),
+              () => checkStatus('cameraStatus'),
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _checkStatus('notificationStatus'),
-              child: const Text('Check Notification Status'),
+
+            /// microphone permission and status
+            permissionCard(
+              'Microphone',
+              Icons.mic,
+              () => request('microphone'),
+              () => checkStatus('microphoneStatus'),
+            ),
+
+            /// notification permission and status
+            permissionCard(
+              'Notifications',
+              Icons.notifications,
+              () => request('notification'),
+              () => checkStatus('notificationStatus'),
             ),
           ],
         ),
