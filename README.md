@@ -5,8 +5,6 @@ A simple Flutter plugin to request Camera, Microphone, and Notification permissi
 
 This plugin provides an easy-to-use API using method channels to handle macOS permissions in your Flutter desktop apps.
 
----
-
 ## ✨ Features
 🎥 Request Camera permission
 
