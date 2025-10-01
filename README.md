@@ -51,14 +51,13 @@ import 'package:flutter_macos_permissions/flutter_macos_permissions.dart';
 
 [Sample](https://github.com/Androidsignal/flutter_macos_permissions/blob/main/example/lib/main.dart) app demonstrates how simple the usage of the library actually is.
 
-Using PriceText in your project is super simple.
-
-You just need to add the widget with an amount and currency type, and it will handle formatting for you.
+Using `flutter_macos_permissions` in your project is super simple.
 
 ## Build permission with FlutterMacosPermissions
 
----
 ## 🔹 Request permissions
+ * You can request permissions for Camera, Microphone, and Notifications :
+
 ```
  String _status = "Idle";
 
@@ -88,29 +87,48 @@ You just need to add the widget with an amount and currency type, and it will ha
 ```
 ### Build UI buttons
 ```
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('macOS Permission Example')),
-      body: Center(
+      appBar: AppBar(title: const Text('MacOS Permissions')),
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(_status),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _request('camera'),
-              child: const Text('Request Camera'),
+            Container(
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.grey.shade400,
+                  width: 2, // Border width
+                ),
+              ),
+              child: Text(
+                status,
+                style: const TextStyle(fontSize: 16),
+              ),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _request('microphone'),
-              child: const Text('Request Microphone'),
+            permissionCard(
+              'Camera',
+              Icons.camera_alt,
+                  () => request('camera'),
+                  () => checkStatus('cameraStatus'),
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _request('notification'),
-              child: const Text('Request Notification'),
+            permissionCard(
+              'Microphone',
+              Icons.mic,
+                  () => request('microphone'),
+                  () => checkStatus('microphoneStatus'),
+            ),
+            permissionCard(
+              'Notifications',
+              Icons.notifications,
+                  () => request('notification'),
+                  () => checkStatus('notificationStatus'),
             ),
           ],
         ),
@@ -121,10 +139,15 @@ You just need to add the widget with an amount and currency type, and it will ha
 ## 📸 Example
 |without Any Permission| with Camera Permission | with Microphone Permission | with Notification Permission |
 |-------------------|-----------------------------|-----------------------------|-----------------------------|
-| ![idel](https://github.com/user-attachments/assets/8e81d7ce-e113-4d13-983d-7d57e18a354f) | ![camera permission](https://github.com/user-attachments/assets/cddb4f6c-55db-450e-8504-23b4613d5dcc)  | ![microphone permission](https://github.com/user-attachments/assets/dc10fdda-8359-4971-b3c3-7f3c0ef3c1c2) | ![Notification permission](https://github.com/user-attachments/assets/a9d2e45d-a7d9-42ee-a4ca-7f4b80bd662c) | 
+| ![idel](https://github.com/user-attachments/assets/f84bc852-6590-4a02-b1fd-d45d84fe6b63) | ![camera permission](https://github.com/user-attachments/assets/50775195-48ff-40ae-aee0-fe730fce0828)  | ![microphone permission](https://github.com/user-attachments/assets/c0051a8f-3ea0-48c1-8ccb-c9192bac80ea) | ![Notification permission](https://github.com/user-attachments/assets/769e417a-4602-425c-8f31-6657014b19d4) | 
+
 
 
 ## 🔹 Check permission status
+
+* You can also check the current status without requesting and with requesting.
+* Status will return one of the following: authorized, denied, restricted, notDetermined.
+
 ```
 /// Check status (without requesting)
   void _checkStatus(String type) async {
@@ -153,30 +176,48 @@ You just need to add the widget with an amount and currency type, and it will ha
 ```
 ### Build UI buttons
 ```
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('macOS Permission Example')),
-      body: Center(
+      appBar: AppBar(title: const Text('MacOS Permissions')),
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-             /// CAMERA
-            ElevatedButton(
-              onPressed: () => _request('camera'),
-              child: const Text('Request Camera'),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.grey.shade400,
+                  width: 2, // Border width
+                ),
+              ),
+              child: Text(
+                status,
+                style: const TextStyle(fontSize: 16),
+              ),
             ),
             const SizedBox(height: 20),
-             /// MICROPHONE
-             ElevatedButton(
-              onPressed: () => _checkStatus('microphoneStatus'),
-              child: const Text('Check Microphone Status'),
+            permissionCard(
+              'Camera',
+              Icons.camera_alt,
+                  () => request('camera'),
+                  () => checkStatus('cameraStatus'),
             ),
-            const SizedBox(height: 20),
-            /// NOTIFICATION
-             ElevatedButton(
-              onPressed: () => _checkStatus('notificationStatus'),
-              child: const Text('Check Notification Status'),
+            permissionCard(
+              'Microphone',
+              Icons.mic,
+                  () => request('microphone'),
+                  () => checkStatus('microphoneStatus'),
+            ),
+            permissionCard(
+              'Notifications',
+              Icons.notifications,
+                  () => request('notification'),
+                  () => checkStatus('notificationStatus'),
             ),
           ],
         ),
@@ -188,15 +229,14 @@ You just need to add the widget with an amount and currency type, and it will ha
 ## 📸 Example
 | Camera Status | Microphone Status | Notification Status |
 |---------------|-------------------|---------------------|
-| ![Camera](https://github.com/user-attachments/assets/06e1174b-36b9-4968-b7cd-90ae48f8809f) | ![Microphone](https://github.com/user-attachments/assets/e8a3f128-3f53-4988-95cf-21410e4db8d4) | ![Notification](https://github.com/user-attachments/assets/1322040a-29e6-41fe-bd9e-6811641c1776) |
-
+| ![Camera](https://github.com/user-attachments/assets/d8312b4a-4b1c-47a3-a526-240cd9d4cbc2) | ![Microphone](https://github.com/user-attachments/assets/a957c261-2139-4793-a4aa-d0daf0c1de42) | ![Notification](https://github.com/user-attachments/assets/febcedad-004c-4a40-a3e5-ebe3d65fcab3) |
 
 # Bugs and Feedback 
 We welcome and appreciate any suggestions you may have for improvement.
 For bugs, questions, and discussions please use the [GitHub Issues](https://github.com/Androidsignal/flutter_macos_permissions/issues).
 
 # Acknowledgments 
-It extends Flutter’s foundation to provide a ready-to-use, customizable currency formatter widget.While Flutter and intl provide the base, flutter_macos_permissions simplifies the process by combining widgets and formatting logic into a single package you can drop into any app.
+It extends Flutter’s foundation to provide a ready-to-use, customizable currency formatter widget.While Flutter and intl provide the base, `flutter_macos_permissions` simplifies the process by combining widgets and formatting logic into a single package you can drop into any app.
  
 # Contribution 
 The DashStack team enthusiastically welcomes contributions and project participation!
@@ -204,5 +244,5 @@ There are a bunch of things you can do if you want to contribute!
 The Contributor Guide has all the information you need for everything from reporting bugs to contributing new features.
   
 # Credits 
-`flutter_macos_permissions` is owned and maintained by the `Dashstack Infotech`.
+`flutter_macos_permissions` is owned and maintained by the `Dashstack Infotech,Surat`.
 Follow us for updates and new releases 🚀.
