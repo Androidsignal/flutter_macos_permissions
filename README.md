@@ -152,9 +152,13 @@ Using `flutter_macos_permissions` in your project easy to intregate.
   }
 ```
 ## 📸 Example
-|without Any Permission| with Camera Permission | with Microphone Permission | with Notification Permission | with Location Permission |
-|-------------------|-----------------------------|-----------------------------|-----------------------------|-----------------------------|
-| ![idel](https://github.com/user-attachments/assets/f84bc852-6590-4a02-b1fd-d45d84fe6b63) | ![camera permission](https://github.com/user-attachments/assets/50775195-48ff-40ae-aee0-fe730fce0828)  | ![microphone permission](https://github.com/user-attachments/assets/c0051a8f-3ea0-48c1-8ccb-c9192bac80ea) | ![Notification permission](https://github.com/user-attachments/assets/769e417a-4602-425c-8f31-6657014b19d4) | ![Location permission](https://github.com/user-attachments/assets/3652c490-f736-43db-a4c3-640b1dce77ef) | 
+|without Any Permission| with Camera Permission | with Microphone Permission |
+|-------------------|-----------------------------|-----------------------------|
+| ![idel](https://github.com/user-attachments/assets/f84bc852-6590-4a02-b1fd-d45d84fe6b63) | ![camera permission](https://github.com/user-attachments/assets/50775195-48ff-40ae-aee0-fe730fce0828)  | ![microphone permission](https://github.com/user-attachments/assets/c0051a8f-3ea0-48c1-8ccb-c9192bac80ea) |
+
+|with Notification Permission | with Location Permission |
+|-----------------------------|-----------------------------|
+![Notification permission](https://github.com/user-attachments/assets/769e417a-4602-425c-8f31-6657014b19d4) | ![Location permission](https://github.com/user-attachments/assets/3652c490-f736-43db-a4c3-640b1dce77ef) | 
 
 ## 🔹 Check permission status
 
@@ -252,9 +256,13 @@ Using `flutter_macos_permissions` in your project easy to intregate.
 ```
 
 ## 📸 Example
-| Camera Status | Microphone Status | Notification Status | Location Status |
-|---------------|-------------------|---------------------|---------------------|
-| ![Camera](https://github.com/user-attachments/assets/d8312b4a-4b1c-47a3-a526-240cd9d4cbc2) | ![Microphone](https://github.com/user-attachments/assets/a957c261-2139-4793-a4aa-d0daf0c1de42) | ![Notification](https://github.com/user-attachments/assets/febcedad-004c-4a40-a3e5-ebe3d65fcab3) |![Location](https://github.com/user-attachments/assets/4d94ff83-6eec-4ba4-b6ef-9658fbabe0b0) |
+| Camera Status                                                                              | Microphone Status                                                                              |
+| ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| ![Camera](https://github.com/user-attachments/assets/d8312b4a-4b1c-47a3-a526-240cd9d4cbc2) | ![Microphone](https://github.com/user-attachments/assets/a957c261-2139-4793-a4aa-d0daf0c1de42) |
+
+| Notification Status                                                                              | Location Status                                                                              |
+| ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| ![Notification](https://github.com/user-attachments/assets/febcedad-004c-4a40-a3e5-ebe3d65fcab3) | ![Location](https://github.com/user-attachments/assets/4d94ff83-6eec-4ba4-b6ef-9658fbabe0b0) |
 
 ## 📑 Permission Properties
 * The table below shows the available permissions, their method calls, possible status values, and the System Preferences location that can be opened if the user has denied access.
