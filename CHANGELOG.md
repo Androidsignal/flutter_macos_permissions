@@ -4,6 +4,9 @@ All notable changes to the **flutter_macos_permissions** package will be documen
 This project follows [Semantic Versioning](https://semver.org/).
 
 ---
+## 2.0.5
+
+- Update documentation in `README.md` with better user example.
 
 ## 2.0.4
 - Add new feature: Location permission support for macOS.
