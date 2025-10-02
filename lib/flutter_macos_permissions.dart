@@ -53,5 +53,4 @@ class FlutterMacosPermissions {
     final result = await _channel.invokeMethod('locationStatus');
     return result ?? '';
   }
-
 }

@@ -173,6 +173,7 @@ class _PermissionExampleState extends State<PermissionExample> {
         child: Column(
           children: [
             const SizedBox(height: 20),
+
             /// Status Display
             Container(
               padding: const EdgeInsets.all(16),
@@ -188,6 +189,7 @@ class _PermissionExampleState extends State<PermissionExample> {
               child: Text(status, style: const TextStyle(fontSize: 16)),
             ),
             const SizedBox(height: 20),
+
             /// camera permission and status
             permissionCard(
               'Camera',
