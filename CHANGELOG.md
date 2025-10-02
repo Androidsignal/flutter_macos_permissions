@@ -5,6 +5,11 @@ This project follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## 2.0.4
+- Add new feature: Location permission support for macOS.
+- update `README.md` with location permission usage Example for better user understanding.
+
+
 ## 2.0.3
 - Updated UI in the example app to showcase permission request and status clearly.
 - Updated `README.md` documentation with new example usage with UI screenshots.

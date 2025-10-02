@@ -43,6 +43,9 @@ class _PermissionExampleState extends State<PermissionExample> {
         case 'notification':
           granted = await FlutterMacosPermissions.requestNotification();
           break;
+        case 'requestLocation':
+          granted = await FlutterMacosPermissions.requestLocation();
+          break;
       }
       setState(() {
         status = 'Requested $type → ${granted ? "Granted" : "Denied"}';
@@ -67,6 +70,9 @@ class _PermissionExampleState extends State<PermissionExample> {
           break;
         case 'notificationStatus':
           status = await FlutterMacosPermissions.notificationStatus();
+          break;
+        case 'locationStatus':
+          status = await FlutterMacosPermissions.locationStatus();
           break;
       }
       setState(() {
@@ -167,7 +173,6 @@ class _PermissionExampleState extends State<PermissionExample> {
         child: Column(
           children: [
             const SizedBox(height: 20),
-
             /// Status Display
             Container(
               padding: const EdgeInsets.all(16),
@@ -183,7 +188,6 @@ class _PermissionExampleState extends State<PermissionExample> {
               child: Text(status, style: const TextStyle(fontSize: 16)),
             ),
             const SizedBox(height: 20),
-
             /// camera permission and status
             permissionCard(
               'Camera',
@@ -206,6 +210,14 @@ class _PermissionExampleState extends State<PermissionExample> {
               Icons.notifications,
               () => request('notification'),
               () => checkStatus('notificationStatus'),
+            ),
+
+            /// location permission and status
+            permissionCard(
+              'Location',
+              Icons.location_on,
+              () => request('requestLocation'),
+              () => checkStatus('locationStatus'),
             ),
           ],
         ),

@@ -23,6 +23,12 @@ class FlutterMacosPermissions {
     return result ?? false;
   }
 
+  /// request location permission
+  static Future<bool> requestLocation() async {
+    final result = await _channel.invokeMethod('requestLocation');
+    return result == 'authorized';
+  }
+
   /// status
   /// Check if camera permission is granted
   static Future<String> cameraStatus() async {
@@ -41,4 +47,11 @@ class FlutterMacosPermissions {
     final result = await _channel.invokeMethod('notificationStatus');
     return result ?? '';
   }
+
+  /// Check if location permission is granted
+  static Future<String> locationStatus() async {
+    final result = await _channel.invokeMethod('locationStatus');
+    return result ?? '';
+  }
+
 }
