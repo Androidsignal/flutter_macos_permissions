@@ -4,10 +4,15 @@ All notable changes to the **flutter_macos_permissions** package will be documen
 This project follows [Semantic Versioning](https://semver.org/).
 
 ---
+## 2.0.7
+
+- Updated `README.md` with usage examples for all newly added permissions to improve better understanding and usage.
+
+
 ## 2.0.6
 
 - Add new permission:Added `Bluetooth permission`,`fullDiskAccess permission` and `screen & system audio recoding permission` support for macOS.
-- Updated README.md with usage examples for all newly added permissions to improve better understanding and usage.
+- Updated `README.md` with usage examples for all newly added permissions to improve better understanding and usage.
 
 ## 2.0.5
 
