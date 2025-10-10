@@ -14,5 +14,17 @@
 	<true/>
 	<key>com.apple.security.device.microphone</key>
 	<true/>
+    <!-- Bluetooth Access -->
+        <key>com.apple.security.bluetooth</key>
+        <true/>
+    <!-- Full Disk Access -->
+        <key>com.apple.security.files.documents.read-write</key>
+        <true/>
+        <key>com.apple.security.files.desktop.read-write</key>
+        <true/>
+        <key>com.apple.security.files.downloads.read-write</key>
+        <true/>
+        <key>com.apple.security.files.Library.read-write</key>
+        <true/>
 </dict>
 </plist>

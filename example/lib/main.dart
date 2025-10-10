@@ -46,6 +46,16 @@ class _PermissionExampleState extends State<PermissionExample> {
         case 'requestLocation':
           granted = await FlutterMacosPermissions.requestLocation();
           break;
+        case 'requestFullDiskAccess':
+          granted = await FlutterMacosPermissions.requestFullDiskAccess();
+          print('fullDiskAccess request $granted');
+          break;
+        case 'requestScreenRecording':
+          granted = await FlutterMacosPermissions.requestScreenRecording();
+          break;
+        case 'requestBluetooth':
+          granted = await FlutterMacosPermissions.requestBluetooth();
+          break;
       }
       setState(() {
         status = 'Requested $type → ${granted ? "Granted" : "Denied"}';
@@ -73,6 +83,15 @@ class _PermissionExampleState extends State<PermissionExample> {
           break;
         case 'locationStatus':
           status = await FlutterMacosPermissions.locationStatus();
+          break;
+        case 'fullDiskAccessStatus':
+          status = await FlutterMacosPermissions.fullDiskAccessStatus();
+          break;
+        case 'screenRecordingStatus':
+          status = await FlutterMacosPermissions.screenRecordingStatus();
+          break;
+        case 'bluetoothStatus':
+          status = await FlutterMacosPermissions.bluetoothStatus();
           break;
       }
       setState(() {
@@ -220,6 +239,30 @@ class _PermissionExampleState extends State<PermissionExample> {
               Icons.location_on,
               () => request('requestLocation'),
               () => checkStatus('locationStatus'),
+            ),
+
+            /// screen recording permission and status
+            permissionCard(
+              'Screen & system audio recording',
+              Icons.screen_share,
+              () => request('requestScreenRecording'),
+              () => checkStatus('screenRecordingStatus'),
+            ),
+
+            /// full disk access permission and status
+            permissionCard(
+              'Full Disk Access',
+              Icons.folder,
+              () => request('requestFullDiskAccess'),
+              () => checkStatus('fullDiskAccessStatus'),
+            ),
+
+            /// bluetooth permission and status
+            permissionCard(
+              'Bluetooth',
+              Icons.bluetooth,
+              () => request('requestBluetooth'),
+              () => checkStatus('bluetoothStatus'),
             ),
           ],
         ),

@@ -38,5 +38,17 @@
     <string>alert</string>
     <key>NSCameraUsageDescription</key>
     <string>This app requires camera access to take photos and videos.</string>
+    <key>NSDocumentsFolderUsageDescription</key>
+    <string>This app requires access to your Documents, Desktop, and Downloads folders.</string>
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>This app requires Bluetooth access to connect to nearby devices.</string>
+    <key>NSFullDiskAccessUsageDescription</key>
+    <string>This app requires Full Disk Access to read and manage files from Documents, Desktop, and Downloads.</string>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>This app needs access to Apple Events to automate system settings for permissions.</string>
+    <key>NSScreenCaptureDescription</key>
+    <string>This app requires screen recording permission to share or record your screen.</string>
+    <key>NSSystemAudioUsageDescription</key>
+    <string>This app requires system audio access to capture or transmit audio.</string>
 </dict>
 </plist>
