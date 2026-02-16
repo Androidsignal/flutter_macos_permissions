@@ -1,4 +1,4 @@
-[![dashstack_poster](https://github.com/user-attachments/assets/01150ab3-4631-48a2-8c56-5c64d0fd887b)](https://dashstack.notion.site/Ravi-Vithani-e65c362e335d45ef993225687e4aacb8?pvs=143)
+[![dashstack_poster](https://github.com/user-attachments/assets/01150ab3-4631-48a2-8c56-5c64d0fd887b)](https://www.dashstack.tech/)
 
 #  flutter macos permissions   
 A simple Flutter plugin to request Camera, Microphone, Notification ,Location ,FullDiskAccess ,Bluetooth and Screen & system audio recording permissions on macOS.
