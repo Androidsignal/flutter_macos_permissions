@@ -4,6 +4,10 @@ All notable changes to the **flutter_macos_permissions** package will be documen
 This project follows [Semantic Versioning](https://semver.org/).
 
 ---
+## 2.0.8
+
+- update Documentation in `README.md`.
+
 ## 2.0.7
 
 - Updated `README.md` with usage examples for all newly added permissions to improve better understanding and usage.
