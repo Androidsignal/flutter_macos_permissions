@@ -47,9 +47,8 @@ enum FlutterMacosPermissionStatus {
   /// Maps a native `bool` request result (`true`/`false`) to
   /// [FlutterMacosPermissionStatus.authorized] or
   /// [FlutterMacosPermissionStatus.denied].
-  factory FlutterMacosPermissionStatus.fromGranted(bool granted) => granted
-      ? FlutterMacosPermissionStatus.authorized
-      : FlutterMacosPermissionStatus.denied;
+  factory FlutterMacosPermissionStatus.fromGranted(bool granted) =>
+      granted ? FlutterMacosPermissionStatus.authorized : FlutterMacosPermissionStatus.denied;
 
   /// True for any state that grants access to the underlying resource.
   bool get isGranted =>
