@@ -4,8 +4,7 @@ import AVFoundation
 import UserNotifications
 import CoreLocation
 import CoreBluetooth
-import ScreenCaptureKit
-import FileProvider
+import EventKit
 
 public class FlutterMacosPermissionsPlugin: NSObject, FlutterPlugin, CLLocationManagerDelegate, CBCentralManagerDelegate {
 
@@ -15,6 +14,8 @@ public class FlutterMacosPermissionsPlugin: NSObject, FlutterPlugin, CLLocationM
 
     private var bluetoothManager: CBCentralManager?
     private var bluetoothResult: FlutterResult?
+
+    private let eventStore = EKEventStore()
 
 
     // MARK: - Register Plugin
@@ -76,6 +77,12 @@ public class FlutterMacosPermissionsPlugin: NSObject, FlutterPlugin, CLLocationM
             self.requestBluetoothPermission(result: result)
         case "bluetoothStatus":
             result(self.checkBluetoothStatus())
+
+        // Calendar
+        case "requestCalendar":
+            self.requestCalendarPermission(result: result)
+        case "calendarStatus":
+            result(self.mapEKStatus(EKEventStore.authorizationStatus(for: .event)))
 
         default:
             result(FlutterMethodNotImplemented)
@@ -352,5 +359,68 @@ private func requestFullDiskAccess(result: @escaping FlutterResult) {
         }
         // Clear stored result
         bluetoothResult = nil
+    }
+
+    // MARK: - Calendar
+    // Map EKAuthorizationStatus to a string. macOS 14 split "authorized" into
+    // "fullAccess"/"writeOnly"; older OS versions only have "authorized".
+    private func mapEKStatus(_ status: EKAuthorizationStatus) -> String {
+        if #available(macOS 14.0, *) {
+            switch status {
+            case .notDetermined: return "notDetermined"
+            case .restricted: return "restricted"
+            case .denied: return "denied"
+            case .fullAccess: return "authorized"
+            case .writeOnly: return "writeOnly"
+            @unknown default: return "unknown"
+            }
+        } else {
+            switch status {
+            case .notDetermined: return "notDetermined"
+            case .restricted: return "restricted"
+            case .denied: return "denied"
+            case .authorized: return "authorized"
+            default: return "unknown"
+            }
+        }
+    }
+
+    private func requestCalendarPermission(result: @escaping FlutterResult) {
+        let status = EKEventStore.authorizationStatus(for: .event)
+        switch mapEKStatus(status) {
+        case "authorized", "writeOnly":
+            result(true)
+            return
+        case "denied", "restricted":
+            showCalendarAlert()
+            result(false)
+            return
+        default:
+            break // notDetermined: fall through and prompt below.
+        }
+
+        if #available(macOS 14.0, *) {
+            eventStore.requestFullAccessToEvents { granted, _ in
+                DispatchQueue.main.async { result(granted) }
+            }
+        } else {
+            eventStore.requestAccess(to: .event) { granted, _ in
+                DispatchQueue.main.async { result(granted) }
+            }
+        }
+    }
+
+    // Show alert guiding user to open Settings for Calendar permission
+    private func showCalendarAlert() {
+        let alert = NSAlert()
+        alert.messageText = "Calendar Permission Needed"
+        alert.informativeText = "Please enable Calendar access in System Settings → Privacy & Security → Calendars."
+        alert.addButton(withTitle: "Open Settings")
+        alert.addButton(withTitle: "Cancel")
+        if alert.runModal() == .alertFirstButtonReturn {
+            if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Calendars") {
+                NSWorkspace.shared.open(url)
+            }
+        }
     }
 }

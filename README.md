@@ -1,9 +1,14 @@
 [![dashstack_poster](https://github.com/user-attachments/assets/01150ab3-4631-48a2-8c56-5c64d0fd887b)](https://www.dashstack.tech/)
 
 #  flutter macos permissions   
-A simple Flutter plugin to request Camera, Microphone, Notification ,Location ,FullDiskAccess ,Bluetooth and Screen & system audio recording permissions on macOS.
+A simple Flutter plugin to request Camera, Microphone, Notification ,Location ,FullDiskAccess ,Bluetooth ,Calendar and Screen & system audio recording permissions on macOS.
 
 This plugin provides an easy-to-use API using method channels to handle macOS permissions in your Flutter desktop apps.
+
+## Requirements
+* Flutter >= 3.27, Dart >= 3.6
+* macOS deployment target >= 10.15
+* Supports both CocoaPods and Swift Package Manager for macOS plugin integration
 
 ## ✨ Features
 🎥 Request Camera permission
@@ -15,6 +20,8 @@ This plugin provides an easy-to-use API using method channels to handle macOS pe
 🌍 Request Location permission
 
 🅱 Request Bluetooth permission
+
+📅 Request Calendar permission
 
 🖥 Request Screen & system audio recording permission
 
@@ -62,41 +69,44 @@ Using `flutter_macos_permissions` in your project easy to intregate.
 ## Build permission with FlutterMacosPermissions
 
 ## 🔹 Request permissions
- * You can request permissions for Camera, Microphone, Notifications ,Location ,Screen & system audio recording ,FullDiskAccess and Bluetooth :
+ * You can request permissions for Camera, Microphone, Notifications ,Location ,Screen & system audio recording ,FullDiskAccess ,Bluetooth and Calendar :
+ * Every `request*()` method returns a `FlutterMacosPermissionStatus` enum (see "Permission status" section below).
 
-```
+```dart
  String status = "Idle";
 
   /// Request Permission
    void request(String type) async {
-    bool granted = false;
+    FlutterMacosPermissionStatus result = FlutterMacosPermissionStatus.unknown;
     try {
       switch (type) {
         case 'camera':
-          granted = await FlutterMacosPermissions.requestCamera();
+          result = await FlutterMacosPermissions.requestCamera();
           break;
         case 'microphone':
-          granted = await FlutterMacosPermissions.requestMicrophone();
+          result = await FlutterMacosPermissions.requestMicrophone();
           break;
         case 'notification':
-          granted = await FlutterMacosPermissions.requestNotification();
+          result = await FlutterMacosPermissions.requestNotification();
           break;
         case 'requestLocation':
-          granted = await FlutterMacosPermissions.requestLocation();
+          result = await FlutterMacosPermissions.requestLocation();
           break;
         case 'requestFullDiskAccess':
-          granted = await FlutterMacosPermissions.requestFullDiskAccess();
-          print('fullDiskAccess request $granted');
+          result = await FlutterMacosPermissions.requestFullDiskAccess();
           break;
         case 'requestScreenRecording':
-          granted = await FlutterMacosPermissions.requestScreenRecording();
+          result = await FlutterMacosPermissions.requestScreenRecording();
           break;
         case 'requestBluetooth':
-          granted = await FlutterMacosPermissions.requestBluetooth();
+          result = await FlutterMacosPermissions.requestBluetooth();
+          break;
+        case 'requestCalendar':
+          result = await FlutterMacosPermissions.requestCalendar();
           break;
       }
       setState(() {
-        status = 'Requested $type → ${granted ? "Granted" : "Denied"}';
+        status = 'Requested $type → ${result.isGranted ? "Granted" : "Denied"} (${result.name})';
       });
     } catch (e) {
       setState(() {
@@ -187,6 +197,14 @@ Using `flutter_macos_permissions` in your project easy to intregate.
               () => request('requestBluetooth'),
               () => checkStatus('bluetoothStatus'),
             ),
+
+            /// calendar permission and status
+            permissionCard(
+              'Calendar',
+              Icons.calendar_month,
+              () => request('requestCalendar'),
+              () => checkStatus('calendarStatus'),
+            ),
           ],
         ),
       ),
@@ -213,41 +231,47 @@ Using `flutter_macos_permissions` in your project easy to intregate.
 ## 🔹 Check permission status
 
 * You can also check the current status without requesting and with requesting.
-* Status will return one of the following: authorized, denied, restricted, notDetermined.
+* Every `*Status()` method returns a `FlutterMacosPermissionStatus` enum value (see "Permission status" section below).
+* `*Status()` only reads the current OS state — it never shows a system prompt. If it returns
+  `notDetermined`, that means the permission was never requested yet; call the matching
+  `request*()` method to trigger the actual dialog.
 
-```
+```dart
 /// Check Permission Status
  void checkStatus(String type) async {
-    String status = 'Unknown';
+    FlutterMacosPermissionStatus result = FlutterMacosPermissionStatus.unknown;
     try {
       switch (type) {
         case 'cameraStatus':
-          status = await FlutterMacosPermissions.cameraStatus();
+          result = await FlutterMacosPermissions.cameraStatus();
           break;
         case 'microphoneStatus':
-          status = await FlutterMacosPermissions.microphoneStatus();
+          result = await FlutterMacosPermissions.microphoneStatus();
           break;
         case 'notificationStatus':
-          status = await FlutterMacosPermissions.notificationStatus();
+          result = await FlutterMacosPermissions.notificationStatus();
           break;
         case 'locationStatus':
-          status = await FlutterMacosPermissions.locationStatus();
+          result = await FlutterMacosPermissions.locationStatus();
           break;
         case 'fullDiskAccessStatus':
-          status = await FlutterMacosPermissions.fullDiskAccessStatus();
+          result = await FlutterMacosPermissions.fullDiskAccessStatus();
           break;
         case 'screenRecordingStatus':
-          status = await FlutterMacosPermissions.screenRecordingStatus();
+          result = await FlutterMacosPermissions.screenRecordingStatus();
           break;
         case 'bluetoothStatus':
-          status = await FlutterMacosPermissions.bluetoothStatus();
+          result = await FlutterMacosPermissions.bluetoothStatus();
+          break;
+        case 'calendarStatus':
+          result = await FlutterMacosPermissions.calendarStatus();
           break;
       }
       setState(() {
-        this.status = 'Status $type → $status';
+        status = 'Status $type → ${result.name}';
       });
     } catch (e) {
-      setState(() => this.status = 'Error: $e');
+      setState(() => status = 'Error: $e');
     }
   }
 ```
@@ -333,6 +357,14 @@ Using `flutter_macos_permissions` in your project easy to intregate.
               () => request('requestBluetooth'),
               () => checkStatus('bluetoothStatus'),
             ),
+
+            /// calendar permission and status
+            permissionCard(
+              'Calendar',
+              Icons.calendar_month,
+              () => request('requestCalendar'),
+              () => checkStatus('calendarStatus'),
+            ),
           ],
         ),
       ),
@@ -355,24 +387,67 @@ Using `flutter_macos_permissions` in your project easy to intregate.
 | ![Bluetooth](https://github.com/user-attachments/assets/ed0353fc-5936-45b2-b189-aab560d931d2)    | ![FullDiskAcess](https://github.com/user-attachments/assets/3c91b4d2-c3ab-4fa6-8e39-58116311e8ee) |
 
 ## 📑 Permission Properties
-* The table below shows the available permissions, their method calls, possible status values, and the System Preferences location that can be opened if the user has denied access.
+* The table below shows the available permissions, their method calls, possible enum values, and the System Preferences location that can be opened if the user has denied access.
 
-| Permission        | Request Permission                                     | Status Permission                                     | Possible Status Values                                | Opens in System Preferences → Privacy & Security |
+| Permission        | Request Permission                                     | Status Permission                                     | Possible `FlutterMacosPermissionStatus` Values                                | Opens in System Preferences → Privacy & Security |
 | ----------------- | ----------------------------------------------- | ---------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------ |
 | **Camera**        | `FlutterMacosPermissions.requestCamera()`       | `FlutterMacosPermissions.cameraStatus()`       | `authorized`, `denied`, `restricted`, `notDetermined` | Camera                                           |
 | **Microphone**    | `FlutterMacosPermissions.requestMicrophone()`   | `FlutterMacosPermissions.microphoneStatus()`   | `authorized`, `denied`, `restricted`, `notDetermined` | Microphone                                       |
-| **Notifications** | `FlutterMacosPermissions.requestNotification()` | `FlutterMacosPermissions.notificationStatus()` | `authorized`, `denied`, `notDetermined`               | Notifications                                    |
-| **Location**      | `FlutterMacosPermissions.requestLocation()`     | `FlutterMacosPermissions.locationStatus()`     | `authorized`, `denied`, `restricted`, `notDetermined` | Location Services                                |
-| **Screen & system audio recording**     | `FlutterMacosPermissions.requestScreenRecording()`   | `FlutterMacosPermissions.screenRecordingStatus()`  | `authorized`, `denied`, `restricted`, `notDetermined` | Screen & system audio recording|
-| **Bluetooth**     | `FlutterMacosPermissions.requestBluetooth()`   | `FlutterMacosPermissions.bluetoothStatus()`  | `authorized`, `denied`, `restricted`, `notDetermined` | Bluetooth                                           |
-| **FullDiskAccess**     | `FlutterMacosPermissions.requestFullDiskAccess()`   | `FlutterMacosPermissions.fullDiskAccessStatus()`  | `authorized`, `denied`, `restricted`, `notDetermined` | Full Disk Access                     |
+| **Notifications** | `FlutterMacosPermissions.requestNotification()` | `FlutterMacosPermissions.notificationStatus()` | `authorized`, `denied`, `notDetermined`, `provisional`, `ephemeral` | Notifications                                    |
+| **Location**      | `FlutterMacosPermissions.requestLocation()`     | `FlutterMacosPermissions.locationStatus()`     | `authorizedAlways`, `authorizedWhenInUse`, `denied`, `restricted`, `notDetermined` | Location Services                                |
+| **Screen & system audio recording**     | `FlutterMacosPermissions.requestScreenRecording()`   | `FlutterMacosPermissions.screenRecordingStatus()`  | `authorized`, `denied` | Screen & system audio recording|
+| **Bluetooth**     | `FlutterMacosPermissions.requestBluetooth()`   | `FlutterMacosPermissions.bluetoothStatus()`  | `authorized`, `denied`, `notDetermined`, `unsupported`, `unknown` | Bluetooth                                           |
+| **FullDiskAccess**     | `FlutterMacosPermissions.requestFullDiskAccess()`   | `FlutterMacosPermissions.fullDiskAccessStatus()`  | `authorized`, `denied`, `notDetermined`, `unknown` | Full Disk Access                     |
+| **Calendar**     | `FlutterMacosPermissions.requestCalendar()`   | `FlutterMacosPermissions.calendarStatus()`  | `authorized`, `denied`, `restricted`, `notDetermined`, `writeOnly` | Calendars                     |
+
+> **Calendar requires Info.plist keys.** Add `NSCalendarsUsageDescription` (pre-macOS 14) and,
+> for macOS 14+, `NSCalendarsFullAccessUsageDescription` / `NSCalendarsWriteOnlyAccessUsageDescription`
+> to your app's `macos/Runner/Info.plist`, or the permission prompt won't appear and the request
+> silently fails.
+>
+> **Sandboxed app?** If `com.apple.security.app-sandbox` is `true` in your
+> `macos/Runner/*.entitlements` files (the default Flutter macOS template), you also need
+> `com.apple.security.personal-information.calendars` set to `true` there — without it the
+> sandbox blocks EventKit outright and the status stays `notDetermined` forever, even after
+> you add the Info.plist keys above.
+
+## 🔹 Permission status: `FlutterMacosPermissionStatus`
+* All `request*()`/`*Status()` methods return this enum instead of a raw `bool`/`String`, so callers get exhaustive `switch` support and no magic-string comparisons.
+* Values: `authorized`, `authorizedAlways`, `authorizedWhenInUse`, `denied`, `restricted`, `notDetermined`, `provisional`, `ephemeral`, `writeOnly`, `unsupported`, `unknown`.
+* `isGranted` is `true` for `authorized`, `authorizedAlways`, `authorizedWhenInUse`, `provisional`, and `writeOnly`.
+* `writeOnly` is Calendar-specific: on macOS 14+, an app can be granted write-only calendar access (can create events but not read existing ones) without a full-access prompt.
+
+```dart
+final status = await FlutterMacosPermissions.fullDiskAccessStatus();
+if (status.isGranted) {
+  // proceed
+} else if (status == FlutterMacosPermissionStatus.notDetermined) {
+  await FlutterMacosPermissions.requestFullDiskAccess();
+}
+```
+
+## ⚠️ Migrating to typed status
+Every `request*()` and `*Status()` method now returns `Future<FlutterMacosPermissionStatus>`
+instead of `Future<bool>` / `Future<String>`.
+
+```dart
+// Before
+final bool granted = await FlutterMacosPermissions.requestCamera();
+final String status = await FlutterMacosPermissions.cameraStatus();
+if (status == 'authorized') { ... }
+
+// After
+final FlutterMacosPermissionStatus granted = await FlutterMacosPermissions.requestCamera();
+final FlutterMacosPermissionStatus status = await FlutterMacosPermissions.cameraStatus();
+if (status.isGranted) { ... }
+```
 
 # Bugs and Feedback 
 We welcome and appreciate any suggestions you may have for improvement.
 For bugs, questions, and discussions please use the [GitHub Issues](https://github.com/Androidsignal/flutter_macos_permissions/issues).
 
 # Acknowledgments 
-It extends Flutter’s foundation to provide a ready-to-use, customizable currency formatter widget.While Flutter and intl provide the base, `flutter_macos_permissions` simplifies the process by combining widgets and formatting logic into a single package you can drop into any app.
+`flutter_macos_permissions` wraps macOS's native permission APIs (AVFoundation, UserNotifications, CoreLocation, CoreBluetooth, EventKit, and the Screen Recording/Full Disk Access privacy checks) behind a single, simple Dart API so you don't have to write platform channel code by hand.
  
 # Contribution 
 The DashStack team enthusiastically welcomes contributions and project participation!

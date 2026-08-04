@@ -50,5 +50,11 @@
     <string>This app requires screen recording permission to share or record your screen.</string>
     <key>NSSystemAudioUsageDescription</key>
     <string>This app requires system audio access to capture or transmit audio.</string>
+    <key>NSCalendarsUsageDescription</key>
+    <string>This app requires access to your calendars to read and manage events.</string>
+    <key>NSCalendarsFullAccessUsageDescription</key>
+    <string>This app requires full access to your calendars to read and manage events.</string>
+    <key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+    <string>This app requires access to add events to your calendars.</string>
 </dict>
 </plist>

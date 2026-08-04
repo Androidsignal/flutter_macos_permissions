@@ -1,92 +1,113 @@
 import 'package:flutter/services.dart';
 
+import 'flutter_macos_permission_status.dart';
+
+export 'flutter_macos_permission_status.dart';
+
 class FlutterMacosPermissions {
   static const MethodChannel _channel =
       MethodChannel('flutter_macos_permissions');
 
-  /// Request
   /// Request camera permission
-  static Future<bool> requestCamera() async {
+  static Future<FlutterMacosPermissionStatus> requestCamera() async {
     final result = await _channel.invokeMethod<bool>('requestCamera');
-    return result ?? false;
+    return FlutterMacosPermissionStatus.fromGranted(result ?? false);
   }
 
   /// Request microphone permission
-  static Future<bool> requestMicrophone() async {
+  static Future<FlutterMacosPermissionStatus> requestMicrophone() async {
     final result = await _channel.invokeMethod<bool>('requestMicrophone');
-    return result ?? false;
+    return FlutterMacosPermissionStatus.fromGranted(result ?? false);
   }
 
   /// Request notification permission
-  static Future<bool> requestNotification() async {
+  static Future<FlutterMacosPermissionStatus> requestNotification() async {
     final result = await _channel.invokeMethod('requestNotification');
-    return result ?? 'authorized';
+    if (result is bool) return FlutterMacosPermissionStatus.fromGranted(result);
+    return FlutterMacosPermissionStatus.fromNative(result as String?);
   }
 
   /// request location permission
-  static Future<bool> requestLocation() async {
-    final result = await _channel.invokeMethod('requestLocation');
-    return result == 'authorized';
+  static Future<FlutterMacosPermissionStatus> requestLocation() async {
+    final result = await _channel.invokeMethod<String>('requestLocation');
+    return FlutterMacosPermissionStatus.fromNative(result);
   }
 
   /// request full disk access permission
-  static Future<bool> requestFullDiskAccess() async {
-    final result = await _channel.invokeMethod('requestFullDiskAccess');
-    return result ?? 'authorized';
+  static Future<FlutterMacosPermissionStatus> requestFullDiskAccess() async {
+    final result = await _channel.invokeMethod<bool>('requestFullDiskAccess');
+    return FlutterMacosPermissionStatus.fromGranted(result ?? false);
   }
 
   /// request bluetooth permission
-  static Future<bool> requestBluetooth() async {
-    final result = await _channel.invokeMethod('requestBluetooth');
-    return result ?? 'authorized';
+  static Future<FlutterMacosPermissionStatus> requestBluetooth() async {
+    final result = await _channel.invokeMethod<bool>('requestBluetooth');
+    return FlutterMacosPermissionStatus.fromGranted(result ?? false);
   }
 
   /// request screen recording permission
-  static Future<bool> requestScreenRecording() async {
-    final result = await _channel.invokeMethod('requestScreenRecording');
-    return result == 'authorized';
+  static Future<FlutterMacosPermissionStatus> requestScreenRecording() async {
+    final result = await _channel.invokeMethod<String>(
+      'requestScreenRecording',
+    );
+    return FlutterMacosPermissionStatus.fromNative(result);
   }
 
-  /// checking status......
   /// Check if camera permission is granted
-  static Future<String> cameraStatus() async {
-    final result = await _channel.invokeMethod('cameraStatus');
-    return result ?? '';
+  static Future<FlutterMacosPermissionStatus> cameraStatus() async {
+    final result = await _channel.invokeMethod<String>('cameraStatus');
+    return FlutterMacosPermissionStatus.fromNative(result);
   }
 
   /// Check if microphone permission is granted
-  static Future microphoneStatus() async {
-    final result = await _channel.invokeMethod('microphoneStatus');
-    return result ?? '';
+  static Future<FlutterMacosPermissionStatus> microphoneStatus() async {
+    final result = await _channel.invokeMethod<String>('microphoneStatus');
+    return FlutterMacosPermissionStatus.fromNative(result);
   }
 
   /// Check if notification permission is granted
-  static Future<String> notificationStatus() async {
-    final result = await _channel.invokeMethod('notificationStatus');
-    return result ?? '';
+  static Future<FlutterMacosPermissionStatus> notificationStatus() async {
+    final result = await _channel.invokeMethod<String>('notificationStatus');
+    return FlutterMacosPermissionStatus.fromNative(result);
   }
 
   /// Check if location permission is granted
-  static Future<String> locationStatus() async {
-    final result = await _channel.invokeMethod('locationStatus');
-    return result ?? '';
+  static Future<FlutterMacosPermissionStatus> locationStatus() async {
+    final result = await _channel.invokeMethod<String>('locationStatus');
+    return FlutterMacosPermissionStatus.fromNative(result);
   }
 
   /// Check if full disk access permission is granted
-  static Future<String> fullDiskAccessStatus() async {
-    final result = await _channel.invokeMethod('fullDiskAccessStatus');
-    return result ?? '';
+  static Future<FlutterMacosPermissionStatus> fullDiskAccessStatus() async {
+    final result = await _channel.invokeMethod<String>(
+      'fullDiskAccessStatus',
+    );
+    return FlutterMacosPermissionStatus.fromNative(result);
   }
 
   /// Check if screen recording permission is granted
-  static Future<String> screenRecordingStatus() async {
-    final result = await _channel.invokeMethod('screenRecordingStatus');
-    return result ?? '';
+  static Future<FlutterMacosPermissionStatus> screenRecordingStatus() async {
+    final result = await _channel.invokeMethod<String>(
+      'screenRecordingStatus',
+    );
+    return FlutterMacosPermissionStatus.fromNative(result);
   }
 
   /// Check if bluetooth permission is granted
-  static Future<String> bluetoothStatus() async {
-    final result = await _channel.invokeMethod('bluetoothStatus');
-    return result ?? '';
+  static Future<FlutterMacosPermissionStatus> bluetoothStatus() async {
+    final result = await _channel.invokeMethod<String>('bluetoothStatus');
+    return FlutterMacosPermissionStatus.fromNative(result);
+  }
+
+  /// request calendar permission
+  static Future<FlutterMacosPermissionStatus> requestCalendar() async {
+    final result = await _channel.invokeMethod<bool>('requestCalendar');
+    return FlutterMacosPermissionStatus.fromGranted(result ?? false);
+  }
+
+  /// Check if calendar permission is granted
+  static Future<FlutterMacosPermissionStatus> calendarStatus() async {
+    final result = await _channel.invokeMethod<String>('calendarStatus');
+    return FlutterMacosPermissionStatus.fromNative(result);
   }
 }

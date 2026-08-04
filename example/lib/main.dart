@@ -31,34 +31,37 @@ class _PermissionExampleState extends State<PermissionExample> {
 
   /// Request Permission
   void request(String type) async {
-    bool granted = false;
+    FlutterMacosPermissionStatus result = FlutterMacosPermissionStatus.unknown;
     try {
       switch (type) {
         case 'camera':
-          granted = await FlutterMacosPermissions.requestCamera();
+          result = await FlutterMacosPermissions.requestCamera();
           break;
         case 'microphone':
-          granted = await FlutterMacosPermissions.requestMicrophone();
+          result = await FlutterMacosPermissions.requestMicrophone();
           break;
         case 'notification':
-          granted = await FlutterMacosPermissions.requestNotification();
+          result = await FlutterMacosPermissions.requestNotification();
           break;
         case 'requestLocation':
-          granted = await FlutterMacosPermissions.requestLocation();
+          result = await FlutterMacosPermissions.requestLocation();
           break;
         case 'requestFullDiskAccess':
-          granted = await FlutterMacosPermissions.requestFullDiskAccess();
-          print('fullDiskAccess request $granted');
+          result = await FlutterMacosPermissions.requestFullDiskAccess();
           break;
         case 'requestScreenRecording':
-          granted = await FlutterMacosPermissions.requestScreenRecording();
+          result = await FlutterMacosPermissions.requestScreenRecording();
           break;
         case 'requestBluetooth':
-          granted = await FlutterMacosPermissions.requestBluetooth();
+          result = await FlutterMacosPermissions.requestBluetooth();
+          break;
+        case 'requestCalendar':
+          result = await FlutterMacosPermissions.requestCalendar();
           break;
       }
       setState(() {
-        status = 'Requested $type → ${granted ? "Granted" : "Denied"}';
+        status =
+            'Requested $type → ${result.isGranted ? "Granted" : "Denied"} (${result.name})';
       });
     } catch (e) {
       setState(() {
@@ -69,36 +72,39 @@ class _PermissionExampleState extends State<PermissionExample> {
 
   /// Check Permission Status
   void checkStatus(String type) async {
-    String status = 'Unknown';
+    FlutterMacosPermissionStatus result = FlutterMacosPermissionStatus.unknown;
     try {
       switch (type) {
         case 'cameraStatus':
-          status = await FlutterMacosPermissions.cameraStatus();
+          result = await FlutterMacosPermissions.cameraStatus();
           break;
         case 'microphoneStatus':
-          status = await FlutterMacosPermissions.microphoneStatus();
+          result = await FlutterMacosPermissions.microphoneStatus();
           break;
         case 'notificationStatus':
-          status = await FlutterMacosPermissions.notificationStatus();
+          result = await FlutterMacosPermissions.notificationStatus();
           break;
         case 'locationStatus':
-          status = await FlutterMacosPermissions.locationStatus();
+          result = await FlutterMacosPermissions.locationStatus();
           break;
         case 'fullDiskAccessStatus':
-          status = await FlutterMacosPermissions.fullDiskAccessStatus();
+          result = await FlutterMacosPermissions.fullDiskAccessStatus();
           break;
         case 'screenRecordingStatus':
-          status = await FlutterMacosPermissions.screenRecordingStatus();
+          result = await FlutterMacosPermissions.screenRecordingStatus();
           break;
         case 'bluetoothStatus':
-          status = await FlutterMacosPermissions.bluetoothStatus();
+          result = await FlutterMacosPermissions.bluetoothStatus();
+          break;
+        case 'calendarStatus':
+          result = await FlutterMacosPermissions.calendarStatus();
           break;
       }
       setState(() {
-        this.status = 'Status $type → $status';
+        status = 'Status $type → ${result.name}';
       });
     } catch (e) {
-      setState(() => this.status = 'Error: $e');
+      setState(() => status = 'Error: $e');
     }
   }
 
@@ -263,6 +269,14 @@ class _PermissionExampleState extends State<PermissionExample> {
               Icons.bluetooth,
               () => request('requestBluetooth'),
               () => checkStatus('bluetoothStatus'),
+            ),
+
+            /// calendar permission and status
+            permissionCard(
+              'Calendar',
+              Icons.calendar_month,
+              () => request('requestCalendar'),
+              () => checkStatus('calendarStatus'),
             ),
           ],
         ),
