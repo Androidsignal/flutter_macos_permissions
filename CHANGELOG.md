@@ -4,43 +4,18 @@ All notable changes to the **flutter_macos_permissions** package will be documen
 This project follows [Semantic Versioning](https://semver.org/).
 
 ---
-## 2.0.9
+## 2.1.0
 
-- Added Calendar permission support: `FlutterMacosPermissions.requestCalendar()` and
-  `calendarStatus()`, backed by EventKit. On macOS 14+ this correctly distinguishes full access
-  from the new write-only calendar access tier (`FlutterMacosPermissionStatus.writeOnly`). Add
-  `NSCalendarsUsageDescription` (and, for macOS 14+, `NSCalendarsFullAccessUsageDescription` /
-  `NSCalendarsWriteOnlyAccessUsageDescription`) to your app's `Info.plist` to use it.
-- `FlutterMacosPermissions` methods now return a typed `FlutterMacosPermissionStatus` enum
-  (`authorized`, `authorizedAlways`, `authorizedWhenInUse`, `denied`, `restricted`,
-  `notDetermined`, `provisional`, `ephemeral`, `writeOnly`, `unsupported`, `unknown`, with an
-  `isGranted` getter) instead of a raw `bool`/`String`. Update callers to use `.isGranted` or compare against
-  the enum values instead of `true`/`false` or string literals like `'authorized'`. `requestLocation()`
-  and `requestScreenRecording()` now surface the full native status (e.g. `authorizedAlways` vs
-  `authorizedWhenInUse`, or `notDetermined`) instead of collapsing it to a bool. See the
-  "Migrating" section in the README for examples.
-- Updated the package for the latest stable Flutter/Dart toolchain (Flutter 3.44, Dart 3.12): bumped
-  `environment` constraints, `plugin_platform_interface`, and `flutter_lints` (5.x → 6.x).
-- Added Swift Package Manager support for macOS (`macos/flutter_macos_permissions/Package.swift`)
-  alongside the existing CocoaPods podspec, matching the current Flutter plugin template layout.
-  Native sources moved from `macos/Classes/` to `macos/flutter_macos_permissions/Sources/flutter_macos_permissions/`.
-- Removed an unused `fileName` key from `pubspec.yaml` that doesn't apply to native (non-Dart-only)
-  plugin implementations.
-- Fixed `requestNotification()`, `requestFullDiskAccess()`, and `requestBluetooth()`, which could
-  throw a runtime `TypeError` or return the wrong boolean because the native side can respond with
-  either a `bool` or a status `String` depending on the permission state, while the Dart side assumed
-  one fixed type.
-- Removed unused `ScreenCaptureKit` and `FileProvider` imports from the native macOS plugin, and
-  raised the podspec's minimum macOS deployment target to `10.15` (required by
-  `CGPreflightScreenCaptureAccess`, used for screen-recording status).
-- Regenerated the example app's macOS Xcode project (`example/macos/Runner.xcodeproj`), which was
-  missing from the repository entirely and prevented the example from building.
-- Replaced the example's stale counter-app widget test (checking for a `"Running on:"` text that
-  the app never renders) with a test that verifies the actual permissions UI.
-- Removed a stray `print()` call from the example app (`avoid_print` lint) and bumped
-  `flutter_lints`/`cupertino_icons` in the example.
-- Added a unit test suite for the plugin (`test/`), covering the public `FlutterMacosPermissions`
-  API and the fixes above.
+- Added Calendar permission (`requestCalendar()`, `calendarStatus()`).
+- All methods now return a `FlutterMacosPermissionStatus` enum instead of a raw `bool`/`String` —
+  use `status.isGranted`. See the README's "Migrating from 2.x" section.
+- Added Swift Package Manager support alongside the existing CocoaPods podspec.
+- Fixed a wrong Bluetooth entitlement key in the example app, and a bug where
+  `requestNotification()`/`requestFullDiskAccess()`/`requestBluetooth()` could crash if the
+  native side returned an unexpected type.
+- Updated for the latest Flutter/Dart (Flutter 3.44, Dart 3.12) and added a test suite.
+- Simplified the README: quick-start example, setup checklist, troubleshooting for the
+  "permission dialog never shows" issue.
 
 ## 2.0.8
 
